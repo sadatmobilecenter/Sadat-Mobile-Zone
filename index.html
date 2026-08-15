@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sadat Mobile Center — آموزش و تعمیرات موبایل</title>
+<meta name="description" content="مرکز آموزش، عیب‌یابی و دانش موبایل Sadat Mobile Center">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#06111d;--panel:#0c1c2d;--panel2:#102640;--line:#1c3a55;--text:#f4f8fc;--muted:#9bb0c4;--a:#29a9ff;--a2:#7c5cff;--good:#20d394;--danger:#ff6175;--shadow:0 20px 60px #0007}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#123c61 0,#06111d 38%,#030911 100%);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;min-height:100vh}
+button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.top{position:sticky;top:0;z-index:10;background:#06111deF;border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}
+.nav{max-width:1180px;margin:auto;padding:14px 18px;display:flex;align-items:center;gap:12px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:18px;margin-left:auto}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--a),var(--a2));display:grid;place-items:center;font-weight:1000}
+.nav button{background:transparent;border:1px solid var(--line);color:var(--text);padding:9px 13px;border-radius:12px}.nav .primary{background:linear-gradient(135deg,var(--a),#1682e8);border:0}
+main{max-width:1180px;margin:auto;padding:24px 18px 70px}.hero{padding:45px 0 30px;display:grid;grid-template-columns:1.2fr .8fr;gap:25px;align-items:center}.badge{display:inline-flex;padding:8px 12px;border:1px solid #2c6288;border-radius:999px;color:#8bd2ff;background:#0a2134}.hero h1{font-size:clamp(34px,6vw,70px);line-height:1.03;margin:18px 0}.hero p{color:var(--muted);font-size:18px;line-height:1.9}.heroCard{background:linear-gradient(145deg,#102d49,#091524);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:var(--shadow)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{background:#091a2aCC;border:1px solid var(--line);border-radius:20px;padding:20px}.card h3{margin:8px 0}.card p{color:var(--muted);line-height:1.7}.icon{font-size:30px}
+.section{margin-top:35px}.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:15px}.sectionHead h2{margin:0;font-size:28px}.sectionHead span{color:var(--muted)}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:11px 15px;border-radius:12px}.btn.primary{background:linear-gradient(135deg,var(--a),#1478d4);border:0}.btn.good{background:#0d5b48;border-color:#1b9f7c}
+.progress{height:9px;background:#07111c;border-radius:99px;overflow:hidden;border:1px solid var(--line)}.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--a2));width:0}
+.search{display:flex;gap:10px}.search input{flex:1;background:#071522;border:1px solid var(--line);color:white;border-radius:13px;padding:13px;outline:none}
+.lesson{display:flex;justify-content:space-between;gap:14px;align-items:center}.lesson small{color:var(--muted)}
+footer{border-top:1px solid var(--line);color:var(--muted);padding:30px;text-align:center}
+.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;z-index:30;padding:15px}.modalBox{width:min(470px,100%);background:#081827;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:var(--shadow)}.modalBox h2{margin-top:0}.field{margin:12px 0}.field label{display:block;color:#b9cad9;margin-bottom:6px}.field input,.field select{width:100%;background:#06121e;color:#fff;border:1px solid var(--line);padding:12px;border-radius:11px}.msg{padding:10px;border-radius:10px;margin:10px 0;display:none}.msg.err{display:block;background:#3b1520;color:#ffb6bf}.msg.ok{display:block;background:#103d32;color:#9ef1d2}
+.userBox{display:flex;gap:10px;align-items:center;background:#081827;border:1px solid var(--line);padding:10px;border-radius:14px}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--a2));font-weight:900}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.nav{overflow:auto}.brand{white-space:nowrap}}
+</style>
+</head>
+<body>
+<header class="top"><nav class="nav">
+  <div class="brand"><div class="logo">SM</div>Sadat Mobile Center</div>
+  <button onclick="scrollToId('academy')">آموزش</button>
+  <button onclick="scrollToId('repair')">عیب‌یابی</button>
+  <button onclick="scrollToId('phones')">گوشی‌ها</button>
+  <button onclick="scrollToId('profile')">پروفایل</button>
+  <button id="authBtn" class="primary" onclick="openAuth()">ورود / ثبت‌نام</button>
+  <div id="userMini" class="userBox hidden"></div>
+</nav></header>
+
+<main>
+<section class="hero">
+ <div>
+  <span class="badge">مرکز هوشمند آموزش و تکنولوژی موبایل</span>
+  <h1>یاد بگیر. تعمیر کن. حرفه‌ای شو.</h1>
+  <p>آموزش‌های مرحله‌به‌مرحله، عیب‌یابی، دانش قطعات، مقایسه گوشی‌ها و مسیر پیشرفت شخصی — با ذخیره خودکار پیشرفت و امتیاز XP.</p>
+  <div class="actions"><button class="btn primary" onclick="scrollToId('academy')">شروع آموزش</button><button class="btn" onclick="scrollToId('repair')">عیب‌یابی گوشی</button></div>
+ </div>
+ <div class="heroCard">
+  <div style="color:#8bd2ff">پیشرفت شما</div><h2 id="heroXp">0 XP</h2>
+  <div class="progress"><i id="heroProgress"></i></div>
+  <p id="heroHint">برای ذخیره پیشرفت، ثبت‌نام یا ورود کنید.</p>
+ </div>
+</section>
+
+<section class="section" id="academy">
+ <div class="sectionHead"><div><h2>🎓 آکادمی موبایل</h2><span>درس‌ها را تمام کن و XP بگیر.</span></div></div>
+ <div id="lessonList" class="grid"></div>
+</section>
+
+<section class="section" id="repair">
+ <div class="sectionHead"><div><h2>🛠️ آزمایشگاه عیب‌یابی</h2><span>علامت مشکل را انتخاب کن.</span></div></div>
+ <div class="grid">
+  <div class="card"><div class="icon">🔋</div><h3>باتری زود خالی می‌شود</h3><p>مصرف پس‌زمینه، سلامت باتری، دمای دستگاه و شارژر را بررسی کن.</p><button class="btn primary" onclick="showGuide('باتری')">راهنمای مرحله‌ای</button></div>
+  <div class="card"><div class="icon">📶</div><h3>آنتن و اینترنت</h3><p>SIM، حالت پرواز، تنظیمات شبکه، APN و تست پوشش را بررسی کن.</p><button class="btn primary" onclick="showGuide('شبکه')">راهنمای مرحله‌ای</button></div>
+  <div class="card"><div class="icon">🔊</div><h3>صدا / اسپیکر</h3><p>ولوم، بلوتوث، خروجی صدا، سوراخ اسپیکر و تست نرم‌افزاری.</p><button class="btn primary" onclick="showGuide('صدا')">راهنمای مرحله‌ای</button></div>
+ </div>
+</section>
+
+<section class="section" id="phones">
+ <div class="sectionHead"><div><h2>📱 جستجوی دانش موبایل</h2><span>برای شروع، نام مدل یا برند را جستجو کن.</span></div></div>
+ <div class="search"><input id="phoneSearch" placeholder="مثلاً iPhone 15, Galaxy S24, OPPO..."><button class="btn primary" onclick="searchPhone()">جستجو</button></div>
+ <div id="phoneResult" class="card" style="margin-top:12px">هنوز جستجویی انجام نشده است.</div>
+</section>
+
+<section class="section" id="profile">
+ <div class="sectionHead"><div><h2>👤 پروفایل و پیشرفت</h2><span>اطلاعات حساب و XP شما در پایگاه داده ذخیره می‌شود.</span></div></div>
+ <div id="profileCard" class="card">برای دیدن پروفایل وارد حساب شوید.</div>
+</section>
+</main>
+<footer>© Sadat Mobile Center — آموزش و تکنولوژی موبایل</footer>
+
+<div id="modal" class="modal hidden" onclick="if(event.target===this)closeAuth()">
+ <div class="modalBox">
+  <div class="actions" style="justify-content:space-between"><h2 id="authTitle">ورود</h2><button class="btn" onclick="closeAuth()">✕</button></div>
+  <div id="authMsg" class="msg"></div>
+  <div id="nameField" class="field hidden"><label>نام</label><input id="name" placeholder="نام شما"></div>
+  <div class="field"><label>ایمیل</label><input id="email" type="email" placeholder="you@example.com"></div>
+  <div class="field"><label>رمز عبور</label><input id="password" type="password" placeholder="حداقل 8 کاراکتر"></div>
+  <div class="actions">
+    <button id="submitAuth" class="btn primary" onclick="submitAuth()">ورود</button>
+    <button id="toggleAuth" class="btn" onclick="toggleAuthMode()">ساخت حساب</button>
+  </div>
+  <button id="resendBtn" class="btn hidden" style="margin-top:10px" onclick="resendEmail()">ارسال دوباره ایمیل تأیید</button>
+ </div>
+</div>
+
+<script>
+/* =========================
+   1) SUPABASE CONFIGURATION
+   =========================
+   بعد از ساخت پروژه Supabase، این دو مقدار را با Project URL و Publishable/Anon key
+   خودت جایگزین کن. هرگز service_role key را اینجا نگذار.
+*/
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+const db = (SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("YOUR_"))
+  ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
+
+let mode="login", currentUser=null, profile=null;
+const lessons=[
+ {id:"basics",title:"مبانی سخت‌افزار موبایل",desc:"شناخت مادربرد، باتری، نمایشگر، کانکتورها و قطعات اصلی.",xp:50},
+ {id:"android",title:"عیب‌یابی اندروید",desc:"بوت‌لوپ، کندی، مصرف باتری، شبکه و مشکلات نرم‌افزاری.",xp:70},
+ {id:"iphone",title:"عیب‌یابی آیفون",desc:"مراحل امن تشخیص مشکلات شارژ، تصویر، صدا و سیستم.",xp:80},
+ {id:"repair",title:"مقدمات تعمیرات",desc:"ابزارها، ESD، بازکردن امن و اصول تشخیص قبل از تعمیر.",xp:100},
+ {id:"diagnosis",title:"تشخیص پیشرفته",desc:"ساخت مسیر تست و تفکیک مشکل نرم‌افزاری از سخت‌افزاری.",xp:120},
+ {id:"business",title:"مهارت‌های بازار موبایل",desc:"شناخت مدل‌ها، مقایسه مشخصات و ارتباط حرفه‌ای با مشتری.",xp:60}
+];
+
+function scrollToId(id){document.getElementById(id)?.scrollIntoView({behavior:"smooth"})}
+function openAuth(){document.getElementById("modal").classList.remove("hidden")}
+function closeAuth(){document.getElementById("modal").classList.add("hidden");clearMsg()}
+function toggleAuthMode(){
+ mode=mode==="login"?"signup":"login";
+ document.getElementById("authTitle").textContent=mode==="login"?"ورود":"ساخت حساب";
+ document.getElementById("submitAuth").textContent=mode==="login"?"ورود":"ثبت‌نام";
+ document.getElementById("toggleAuth").textContent=mode==="login"?"ساخت حساب":"قبلاً حساب دارم";
+ document.getElementById("nameField").classList.toggle("hidden",mode==="login");
+}
+function msg(text,type="err"){const el=document.getElementById("authMsg");el.textContent=text;el.className="msg "+type}
+function clearMsg(){document.getElementById("authMsg").className="msg";document.getElementById("authMsg").textContent=""}
+
+async function submitAuth(){
+ if(!db){msg("اول Supabase URL و Publishable key را در همین فایل وارد کن.");return}
+ const email=document.getElementById("email").value.trim(), password=document.getElementById("password").value;
+ if(!email||!password){msg("ایمیل و رمز عبور را وارد کن.");return}
+ if(mode==="signup"){
+   const name=document.getElementById("name").value.trim()||"کاربر موبایل";
+   const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name},emailRedirectTo:location.origin+location.pathname}});
+   if(error){msg(error.message);return}
+   msg("حساب ساخته شد. ایمیل خود را باز کن و لینک تأیید را بزن؛ سپس وارد سایت شو.","ok");
+   document.getElementById("resendBtn").classList.remove("hidden");
+ }else{
+   const {data,error}=await db.auth.signInWithPassword({email,password});
+   if(error){msg(error.message);return}
+   if(data.user && !data.user.email_confirmed_at){msg("ایمیل شما هنوز تأیید نشده است.");return}
+   closeAuth(); await refreshUser();
+ }
+}
+async function resendEmail(){
+ if(!db)return;
+ const email=document.getElementById("email").value.trim();
+ const {error}=await db.auth.resend({type:"signup",email,options:{emailRedirectTo:location.origin+location.pathname}});
+ if(error)msg(error.message);else msg("ایمیل تأیید دوباره ارسال شد.","ok");
+}
+async function logout(){if(db){await db.auth.signOut({scope:"local"});currentUser=null;profile=null;renderAuth();renderProfile();renderLessons()}}
+async function refreshUser(){
+ if(!db)return;
+ const {data:{user}}=await db.auth.getUser(); currentUser=user||null;
+ if(currentUser){
+   const {data}=await db.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();
+   profile=data||{id:currentUser.id,display_name:currentUser.user_metadata?.display_name||"کاربر موبایل",xp:0};
+ }
+ renderAuth();renderProfile();renderLessons();
+}
+function renderAuth(){
+ const btn=document.getElementById("authBtn"), mini=document.getElementById("userMini");
+ if(currentUser){
+   btn.classList.add("hidden");mini.classList.remove("hidden");
+   mini.innerHTML=`<div class="avatar">${(profile?.display_name||"ک").slice(0,1)}</div><div>${escapeHtml(profile?.display_name||"کاربر")}<br><small>${profile?.xp||0} XP</small></div><button class="btn" onclick="logout()">خروج</button>`;
+ }else{btn.classList.remove("hidden");mini.classList.add("hidden")}
+}
+function renderProfile(){
+ const box=document.getElementById("profileCard");
+ if(!currentUser){box.textContent="برای دیدن پروفایل وارد حساب شوید.";return}
+ const xp=profile?.xp||0, next=500, pct=Math.min(100,xp/next*100);
+ box.innerHTML=`<div class="userBox"><div class="avatar">${(profile?.display_name||"ک").slice(0,1)}</div><div><b>${escapeHtml(profile?.display_name||"کاربر موبایل")}</b><br><small>${escapeHtml(currentUser.email||"")}</small></div></div><h3>${xp} XP</h3><div class="progress"><i style="width:${pct}%"></i></div><p>تا سطح بعدی: ${Math.max(0,next-xp)} XP</p><button class="btn" onclick="logout()">خروج از حساب</button>`;
+ document.getElementById("heroXp").textContent=xp+" XP";document.getElementById("heroProgress").style.width=pct+"%";document.getElementById("heroHint").textContent="پیشرفت شما در حساب ذخیره می‌شود.";
+}
+function renderLessons(){
+ const wrap=document.getElementById("lessonList");wrap.innerHTML="";
+ lessons.forEach(async l=>{
+   let done=false;
+   if(db&&currentUser){const {data}=await db.from("lesson_progress").select("completed").eq("user_id",currentUser.id).eq("lesson_id",l.id).maybeSingle();done=!!data?.completed}
+   const el=document.createElement("div");el.className="card";
+   el.innerHTML=`<div class="lesson"><div><div class="icon">📘</div><h3>${l.title}</h3><p>${l.desc}</p><small>پاداش: ${l.xp} XP</small></div><button class="btn ${done?"good":"primary"}">${done?"✓ تکمیل شد":"شروع درس"}</button></div>`;
+   el.querySelector("button").onclick=()=>completeLesson(l,done);wrap.appendChild(el);
+ });
+}
+async function completeLesson(l,done){
+ if(!currentUser){openAuth();msg("برای ذخیره پیشرفت، اول وارد حساب شو.","err");return}
+ if(done){showGuide("این درس قبلاً تکمیل شده است.");return}
+ const {error}=await db.from("lesson_progress").upsert({user_id:currentUser.id,lesson_id:l.id,completed:true,completed_at:new Date().toISOString()},{onConflict:"user_id,lesson_id"});
+ if(error){showGuide("خطا در ذخیره پیشرفت: "+error.message);return}
+ const {error:xpErr}=await db.rpc("add_xp",{amount:l.xp});
+ if(xpErr) showGuide("درس ذخیره شد، اما XP به‌روزرسانی نشد. SQL تابع add_xp را اجرا کن.");
+ else await refreshUser();
+ showGuide("آفرین! درس تکمیل شد و "+l.xp+" XP گرفتی.");
+}
+function showGuide(type){alert("راهنمای "+type+"\\n\\n۱) مشکل را دقیق مشخص کن.\\n۲) قبل از بازکردن گوشی، تست‌های نرم‌افزاری و ظاهری را انجام بده.\\n۳) اگر نیاز به تعمیر سخت‌افزاری بود، از ابزار مناسب و محافظ ESD استفاده کن.\\n۴) در مواردی مثل باتری متورم یا آسیب فیزیکی شدید، تعمیر را متوقف و به تعمیرکار متخصص مراجعه کن.")}
+function searchPhone(){
+ const q=document.getElementById("phoneSearch").value.trim();
+ document.getElementById("phoneResult").innerHTML=q?`<h3>🔎 نتیجه برای «${escapeHtml(q)}»</h3><p>این بخش آماده اتصال به بانک اطلاعاتی مدل‌هاست. می‌توانیم مشخصات، مقایسه، قطعات، مشکلات رایج و آموزش تعمیر هر مدل را به آن اضافه کنیم.</p>`:"نام مدل را وارد کن.";
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+if(db){
+ db.auth.onAuthStateChange((_event,_session)=>setTimeout(refreshUser,0));
+ refreshUser();
+}else{renderLessons();renderAuth();renderProfile()}
+</script>
+</body>
+</html>
